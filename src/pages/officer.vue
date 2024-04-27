@@ -20,6 +20,17 @@ const prepareCallNumbers = (queueList)=>{
   }
   return queueList
 }
+
+const prepareOneCallNumber = (queue)=>{
+  let call_initial = {
+    "10-wheels": "A",
+    "6-wheels": "B",
+    "pickup": "C"
+  }[category]
+  queue.call_number = call_initial + queue.call_id.toString().padStart(3, '0')
+  return queue
+}
+
 const loadData = () => {
 
   // @app.get('/category/{category}/queue')
@@ -41,6 +52,7 @@ const callNext = () => {
     .then(response => response.json())
     .then(data => {
       console.log('Success:', data);
+      actuallyServing.value = prepareOneCallNumber(data)
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -68,9 +80,10 @@ onMounted(() => {
 
 <template>
   <v-container>
+    <h3>Category: {{ category }}</h3>
     <v-row>
       <v-col cols="8">
-        <v-card class="current-serving" v-if="actuallyServing">
+        <v-card class="current-serving ma-4" v-if="actuallyServing">
           <v-card-title>
             <h2>Actually serving</h2>
           </v-card-title>
