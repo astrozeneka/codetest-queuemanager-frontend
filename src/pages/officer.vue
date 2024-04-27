@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 
+
 import {onMounted, ref} from "vue";
 
 let actuallyServing = ref(false)
@@ -47,7 +48,6 @@ const loadData = () => {
 }
 
 const callNext = () => {
-  // @app.get('/warehouse/{warehouse}/queue/{id}')
   fetch('http://localhost:8000/warehouse/' + warehouse + '/queue/' + entityList.value[0].id)
     .then(response => response.json())
     .then(data => {
@@ -57,6 +57,27 @@ const callNext = () => {
     .catch((error) => {
       console.error('Error:', error);
     });
+}
+
+const done = () => {
+  // @app.post('/queue/{id}/finish')
+  fetch('http://localhost:8000/queue/' + entityList.value[0].id + '/finish', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({})
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      actuallyServing.value = false
+      loadData()
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+
 }
 
 onMounted(() => {
@@ -83,25 +104,32 @@ onMounted(() => {
     <h3>Category: {{ category }}</h3>
     <v-row>
       <v-col cols="8">
-        <v-card class="current-serving ma-4" v-if="actuallyServing">
-          <v-card-title>
-            <h2>Actually serving</h2>
-          </v-card-title>
-          <v-card-text>
-            <h3>A001</h3>
-            <p>Warehouse 5</p>
-            <p>Pickup</p>
-          </v-card-text>
-        </v-card>
-        <div class="controls pa-4">
 
+        <div class="controls pa-4">
           <v-btn color="primary" @click="callNext">
             <v-icon left>
               mdi-arrow-right
             </v-icon>
             Call next
           </v-btn>
+          <v-btn color="success" @click="done">
+            <v-icon left>
+              mdi-check
+            </v-icon>
+            Done
+          </v-btn>
         </div>
+
+        <v-card class="current-serving ma-4" v-if="actuallyServing">
+          <v-card-title>
+            <h2>Actually serving</h2>
+          </v-card-title>
+          <v-card-text>
+            <h3>{{ actuallyServing.call_number }}</h3>
+            <p>Warehouse {{ actuallyServing.warehouse }}</p>
+            <p>{{ actuallyServing.category }}</p>
+          </v-card-text>
+        </v-card>
 
       </v-col>
       <v-col cols="4" class="next-services">
@@ -131,7 +159,10 @@ onMounted(() => {
 }
 
 .controls{
-  text-align: center;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  justify-content: center;
 }
 
 .next-services{
