@@ -2,7 +2,7 @@
 const exportStats = () =>{
   console.log("Export PDF")
   // @app.get('/export/pdf')
-  fetch('http://localhost:8000/export/pdf', {
+  fetch(import.meta.env.VITE_BACKEND_SERVER + '/export/pdf', {
     method: 'GET',
   })
       .then(response => response.blob())

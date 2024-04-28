@@ -59,7 +59,7 @@ const loadData = () => {
 
   // @app.get('/category/{category}/queue')
   console.log(category.value)
-  fetch('http://localhost:8000/category/' + category.value + '/queue')
+  fetch(import.meta.env.VITE_BACKEND_SERVER + '/category/' + category.value + '/queue')
     .then(response => response.json())
     .then(data => {
       console.trace('Success:', data);
@@ -71,7 +71,7 @@ const loadData = () => {
 }
 
 const callNext = () => {
-  fetch('http://localhost:8000/warehouse/' + warehouse.value + '/queue/' + entityList.value[0].id)
+  fetch(import.meta.env.VITE_BACKEND_SERVER + '/warehouse/' + warehouse.value + '/queue/' + entityList.value[0].id)
     .then(response => response.json())
     .then(data => {
       console.log('Success:', data);
@@ -84,7 +84,7 @@ const callNext = () => {
 
 const done = () => {
   // @app.post('/queue/{id}/finish')
-  fetch('http://localhost:8000/queue/' + entityList.value[0].id + '/finish', {
+  fetch(import.meta.env.VITE_BACKEND_SERVER + '/queue/' + entityList.value[0].id + '/finish', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

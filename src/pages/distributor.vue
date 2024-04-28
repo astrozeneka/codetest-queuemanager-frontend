@@ -15,7 +15,7 @@ const select = (category: string) => {
   call_number.value = ''
   qr_url.value = ''
 
-  fetch('http://localhost:8000/request-queue', {
+  fetch(import.meta.env.VITE_BACKEND_SERVER + '/request-queue', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
