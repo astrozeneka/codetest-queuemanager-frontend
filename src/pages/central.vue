@@ -86,10 +86,30 @@ onMounted(() => {
         </v-col>
         <v-col cols="4">
           <h2>รถ 6 ล้อ</h2>
+          <v-card class="ma-2" v-for="queue in queueList6Wheels" :key="queue.id">
+            <v-card-title>
+              <h3>
+                {{ queue.call_number }}
+              </h3>
+            </v-card-title>
+            <v-card-text>
+              <p>Warehouse {{ queue.warehouse }}</p>
+            </v-card-text>
+          </v-card>
 
         </v-col>
         <v-col cols="4">
           <h2>รถกระบะ</h2>
+          <v-card class="ma-2" v-for="queue in queueListPickup" :key="queue.id">
+            <v-card-title>
+              <h3>
+                {{ queue.call_number }}
+              </h3>
+            </v-card-title>
+            <v-card-text>
+              <p>Warehouse {{ queue.warehouse }}</p>
+            </v-card-text>
+          </v-card>
 
         </v-col>
       </v-row>
